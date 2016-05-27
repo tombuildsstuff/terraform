@@ -502,6 +502,7 @@ func (n *graphNodeExpandedResource) managedResourceEvalNodes(resource *Resource,
 				&EvalWriteState{
 					Name:         n.stateId(),
 					ResourceType: n.Resource.Type,
+					ResourceMode: n.Resource.Mode,
 					Provider:     n.Resource.Provider,
 					Dependencies: n.StateDependencies(),
 					State:        &state,

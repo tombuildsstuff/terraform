@@ -1011,6 +1011,12 @@ type ResourceState struct {
 	// this value, it won't be persisted.
 	Type string `json:"type"`
 
+	// Mode indicates the config.ResourceMode of this resource. The default mode
+	// is a ManagedResourceMode, in which case this field will be omitted.
+	// Terraform core manages this value, resource providers should not interact
+	// with it.
+	Mode string `json:"mode",omitempty`
+
 	// Dependencies are a list of things that this resource relies on
 	// existing to remain intact. For example: an AWS instance might
 	// depend on a subnet (which itself might depend on a VPC, and so

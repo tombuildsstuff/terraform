@@ -3,6 +3,8 @@ package terraform
 import (
 	"sync"
 	"testing"
+
+	"github.com/hashicorp/terraform/config"
 )
 
 func TestEvalRequireState(t *testing.T) {
@@ -147,6 +149,56 @@ func TestEvalWriteState(t *testing.T) {
 	node := &EvalWriteState{
 		Name:         "restype.resname",
 		ResourceType: "restype",
+		State:        &is,
+	}
+	_, err := node.Eval(ctx)
+	if err != nil {
+		t.Fatalf("Got err: %#v", err)
+	}
+
+	checkStateString(t, state, `
+restype.resname:
+  ID = i-abc123
+	`)
+}
+
+func TestEvalWriteState_resourceModeDefault(t *testing.T) {
+	state := &State{}
+	ctx := new(MockEvalContext)
+	ctx.StateState = state
+	ctx.StateLock = new(sync.RWMutex)
+	ctx.PathPath = rootModulePath
+
+	is := &InstanceState{ID: "i-abc123"}
+	node := &EvalWriteState{
+		Name:         "restype.resname",
+		ResourceType: "restype",
+		ResourceMode: config.ManagedResourceMode,
+		State:        &is,
+	}
+	_, err := node.Eval(ctx)
+	if err != nil {
+		t.Fatalf("Got err: %#v", err)
+	}
+
+	checkStateString(t, state, `
+restype.resname:
+  ID = i-abc123
+	`)
+}
+
+func TestEvalWriteState_resourceModeData(t *testing.T) {
+	state := &State{}
+	ctx := new(MockEvalContext)
+	ctx.StateState = state
+	ctx.StateLock = new(sync.RWMutex)
+	ctx.PathPath = rootModulePath
+
+	is := &InstanceState{ID: "i-abc123"}
+	node := &EvalWriteState{
+		Name:         "restype.resname",
+		ResourceType: "restype",
+		ResourceMode: config.DataResourceMode,
 		State:        &is,
 	}
 	_, err := node.Eval(ctx)
