@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/arm/cdn"
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
+	"github.com/Azure/azure-sdk-for-go/arm/containerservice"
 	"github.com/Azure/azure-sdk-for-go/arm/eventhub"
 	"github.com/Azure/azure-sdk-for-go/arm/keyvault"
 	"github.com/Azure/azure-sdk-for-go/arm/network"
@@ -56,8 +57,9 @@ type ArmClient struct {
 	routeTablesClient            network.RouteTablesClient
 	routesClient                 network.RoutesClient
 
-	cdnProfilesClient  cdn.ProfilesClient
-	cdnEndpointsClient cdn.EndpointsClient
+	cdnProfilesClient      cdn.ProfilesClient
+	cdnEndpointsClient     cdn.EndpointsClient
+	containerServiceClient containerservice.OperationsClient
 
 	eventHubNamespacesClient eventhub.NamespacesClient
 
@@ -344,6 +346,12 @@ func (c *Config) getArmClient() (*ArmClient, error) {
 	suc.Authorizer = spt
 	suc.Sender = autorest.CreateSender(withRequestLogging())
 	client.storageUsageClient = suc
+
+	csoc := containerservice.NewOperationsClient(c.SubscriptionID)
+	setUserAgent(&csoc.Client)
+	csoc.Authorizer = spt
+	csoc.Sender = autorest.CreateSender(withRequestLogging())
+	client.containerServiceClient = csoc
 
 	cpc := cdn.NewProfilesClient(c.SubscriptionID)
 	setUserAgent(&cpc.Client)
