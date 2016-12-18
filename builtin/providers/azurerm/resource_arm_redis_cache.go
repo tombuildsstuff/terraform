@@ -59,8 +59,9 @@ func resourceArmRedisCache() *schema.Resource {
 			},
 
 			"shard_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
+				Type:         schema.TypeInt,
+				Optional:     true,
+				ValidateFunc: validateRedisShardCount,
 			},
 
 			"enable_non_ssl_port": {
@@ -448,5 +449,15 @@ func validateRedisSku(v interface{}, k string) (ws []string, errors []error) {
 	if !skus[value] {
 		errors = append(errors, fmt.Errorf("Redis SKU can only be Basic, Standard or Premium"))
 	}
+	return
+}
+
+func validateRedisShardCount(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(int)
+
+	if (value > 10 || 1 > value) {
+		errors = append(errors, fmt.Errorf("Redis Shard Count can only be between 1 and 10."))
+	}
+
 	return
 }

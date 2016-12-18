@@ -10,6 +10,34 @@ import (
 	"github.com/hashicorp/terraform/terraform"
 )
 
+func TestAccAzureRMRedisCacheShardCount_validation(t *testing.T) {
+	cases := []struct {
+		Value    int
+		ErrCount int
+	}{
+		{ Value: 0, ErrCount: 1, },
+		{ Value: 1, ErrCount: 0, },
+		{ Value: 2, ErrCount: 0, },
+		{ Value: 3, ErrCount: 0, },
+		{ Value: 4, ErrCount: 0, },
+		{ Value: 5, ErrCount: 0, },
+		{ Value: 6, ErrCount: 0, },
+		{ Value: 7, ErrCount: 0, },
+		{ Value: 8, ErrCount: 0, },
+		{ Value: 9, ErrCount: 0, },
+		{ Value: 10, ErrCount: 0, },
+		{ Value: 11, ErrCount: 1, },
+	}
+
+	for _, tc := range cases {
+		_, errors := validateRedisShardCount(tc.Value, "azurerm_redis_cache")
+
+		if len(errors) != tc.ErrCount {
+			t.Fatalf("Expected the Azure RM Redis Cache Shard Count to trigger a validation error")
+		}
+	}
+}
+
 func TestAccAzureRMRedisCacheFamily_validation(t *testing.T) {
 	cases := []struct {
 		Value    string
