@@ -371,28 +371,22 @@ func expandRedisConfiguration(d *schema.ResourceData) *map[string]*string {
 	for _, v := range configuration {
 		config := v.(map[string]interface{})
 
-		maxClients := config["maxclients"].(string)
-		if maxClients != "" {
-			output["maxclients"] = azure.String(maxClients)
-		}
-
-		maxMemoryDelta := config["maxmemory_delta"].(string)
-		if maxMemoryDelta != "" {
-			output["maxmemory-delta"] = azure.String(maxMemoryDelta)
-		}
-
-		maxMemoryReserved := config["maxmemory_reserved"].(string)
-		if maxMemoryReserved != "" {
-			output["maxmemory-reserved"] = azure.String(maxMemoryReserved)
-		}
-
-		maxMemoryPolicy := config["maxmemory_policy"].(string)
-		if maxMemoryPolicy != "" {
-			output["maxmemory-policy"] = azure.String(maxMemoryPolicy)
-		}
+		output["maxclients"] = parseRedisConfigurationValue(config, "maxclients")
+		output["maxmemory-delta"] = parseRedisConfigurationValue(config, "maxmemory_delta")
+		output["maxmemory-reserved"] = parseRedisConfigurationValue(config, "maxmemory_reserved")
+		output["maxmemory-policy"] = parseRedisConfigurationValue(config, "maxmemory_policy")
 	}
 
 	return &output
+}
+
+func parseRedisConfigurationValue(configuration *map[string]*string, key *string) *string {
+	value := config[key].(string)
+	if value != "" {
+		return azure.String(value)
+	}
+
+	return nil
 }
 
 func flattenRedisConfiguration(configuration *map[string]*string) map[string]*string {
@@ -455,7 +449,7 @@ func validateRedisSku(v interface{}, k string) (ws []string, errors []error) {
 func validateRedisShardCount(v interface{}, k string) (ws []string, errors []error) {
 	value := v.(int)
 
-	if (value > 10 || 1 > value) {
+	if value > 10 || 1 > value {
 		errors = append(errors, fmt.Errorf("Redis Shard Count can only be between 1 and 10."))
 	}
 
