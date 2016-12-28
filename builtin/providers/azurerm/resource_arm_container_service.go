@@ -18,9 +18,9 @@ import (
 
 func resourceArmContainerService() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceArmContainerServiceCreate,
+		Create: resourceArmContainerServiceCreateUpdate,
 		Read:   resourceArmContainerServiceRead,
-		Update: resourceArmContainerServiceCreate,
+		Update: resourceArmContainerServiceCreateUpdate,
 		Delete: resourceArmContainerServiceDelete,
 
 		Schema: map[string]*schema.Schema{
@@ -30,12 +30,7 @@ func resourceArmContainerService() *schema.Resource {
 				ForceNew: true,
 			},
 
-			"location": {
-				Type:      schema.TypeString,
-				Required:  true,
-				ForceNew:  true,
-				StateFunc: azureRMNormalizeLocation,
-			},
+			"location": locationSchema(),
 
 			"resource_group_name": {
 				Type:     schema.TypeString,
@@ -185,7 +180,7 @@ func resourceArmContainerService() *schema.Resource {
 	}
 }
 
-func resourceArmContainerServiceCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceArmContainerServiceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient)
 	containerServiceClient := client.containerServicesClient
 
@@ -533,25 +528,27 @@ func expandAzureRmContainerServiceAgentProfiles(d *schema.ResourceData) ([]conta
 	configs := d.Get("agent_pool_profile").(*schema.Set).List()
 	profiles := make([]containerservice.AgentPoolProfile, 0, len(configs))
 
-	for _, configRaw := range configs {
-		data := configRaw.(map[string]interface{})
+	/*
+		for _, configRaw := range configs {
+			data := configRaw.(map[string]interface{})
 
-		name := data["name"].(string)
-		count := int32(data["count"].(int))
-		dnsPrefix := data["dns_prefix"].(string)
-		fqdn := data["fqdn"].(string)
-		vmSize := data["vm_size"].(string)
+			name := data["name"].(string)
+			count := int32(data["count"].(int))
+			dnsPrefix := data["dns_prefix"].(string)
+			fqdn := data["fqdn"].(string)
+			vmSize := data["vm_size"].(string)
 
-		profile := containerservice.AgentPoolProfile{
-			Name:      &name,
-			Count:     &count,
-			VMSize:    containerservice.VMSizeTypes(vmSize),
-			DNSPrefix: &dnsPrefix,
-			Fqdn:      &fqdn,
+			profile := containerservice.AgentPoolProfile{
+				Name:      &name,
+				Count:     &count,
+				VMSize:    containerservice.VMSizeTypes(vmSize),
+				DNSPrefix: &dnsPrefix,
+				Fqdn:      &fqdn,
+			}
+
+			profiles = append(profiles, profile)
 		}
-
-		profiles = append(profiles, profile)
-	}
+	*/
 
 	return profiles, nil
 }
@@ -671,14 +668,6 @@ func validateArmContainerServiceMasterProfileCount(v interface{}, k string) (ws 
 
 	if !capacities[value] {
 		errors = append(errors, fmt.Errorf("The number of master nodes must be 1, 3 or 5."))
-	}
-	return
-}
-
-func validateArmContainerServiceAgentPoolProfileCount(v interface{}, k string) (ws []string, errors []error) {
-	value := v.(int)
-	if value > 100 || 0 >= value {
-		errors = append(errors, fmt.Errorf("The Count for an Agent Pool Profile can only be between 1 and 100."))
 	}
 	return
 }
