@@ -13,8 +13,9 @@ type OpsGenieClient struct {
 
 	StopContext context.Context
 
-	teams client.OpsGenieTeamClient
-	users client.OpsGenieUserClient
+	schedules client.OpsGenieScheduleClient
+	teams     client.OpsGenieTeamClient
+	users     client.OpsGenieUserClient
 }
 
 // Config defines the configuration options for the OpsGenie client
@@ -29,6 +30,12 @@ func (c *Config) Client() (*OpsGenieClient, error) {
 	client := OpsGenieClient{}
 
 	log.Printf("[INFO] OpsGenie client configured")
+
+	schedulesClient, err := opsGenie.Schedule()
+	if err != nil {
+		return nil, err
+	}
+	client.schedules = *schedulesClient
 
 	teamsClient, err := opsGenie.Team()
 	if err != nil {
