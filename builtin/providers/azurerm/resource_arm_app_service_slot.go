@@ -8,12 +8,12 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func resourceArmAppService() *schema.Resource {
+func resourceArmAppServiceSlot() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceArmAppServiceCreateUpdate,
-		Read:   resourceArmAppServiceRead,
-		Update: resourceArmAppServiceCreateUpdate,
-		Delete: resourceArmAppServiceDelete,
+		Create: resourceArmAppServiceSlotCreateUpdate,
+		Read:   resourceArmAppServiceSlotRead,
+		Update: resourceArmAppServiceSlotCreateUpdate,
+		Delete: resourceArmAppServiceSlotDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -33,13 +33,13 @@ func resourceArmAppService() *schema.Resource {
 				ForceNew: true,
 			},
 
-			"resource_group_name": {
+			"app_service_name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 
-			"server_farm_id": {
+			"resource_group_name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -52,23 +52,22 @@ func resourceArmAppService() *schema.Resource {
 	}
 }
 
-func resourceArmAppServiceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceArmAppServiceSlotCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).sitesClient
 
-	resourceGroup := d.Get("resource_group_name").(string)
 	name := d.Get("name").(string)
-	kind := d.Get("kind").(string)
 	location := d.Get("location").(string)
-	serverFarmId := d.Get("server_farm_id").(string)
+	kind := d.Get("kind").(string)
+	resourceGroup := d.Get("resource_group_name").(string)
+	appServiceName := d.Get("app_service_name").(string)
 	siteConfig := expandAzureRmAppServiceSiteConfig(d)
 	tags := d.Get("tags").(map[string]interface{})
 
 	siteEnvelope := web.Site{
 		Name:     &name,
-		Kind:     &kind,
 		Location: &location,
+		Kind:     &kind,
 		SiteProperties: &web.SiteProperties{
-			ServerFarmID: &serverFarmId,
 			SiteConfig: &web.SiteConfig{
 				SiteConfigProperties: siteConfig,
 			},
@@ -76,26 +75,26 @@ func resourceArmAppServiceCreateUpdate(d *schema.ResourceData, meta interface{})
 		Tags: expandTags(tags),
 	}
 
-	_, err := client.CreateOrUpdateSite(resourceGroup, name, siteEnvelope, "", "", "", "", make(chan struct{}))
+	_, err := client.CreateOrUpdateSiteSlot(resourceGroup, appServiceName, siteEnvelope, name, "", "", "", "", make(chan struct{}))
 	if err != nil {
 		return err
 	}
 
-	read, err := client.GetSite(resourceGroup, name, "")
+	read, err := client.GetSiteSlot(resourceGroup, appServiceName, name, "")
 	if err != nil {
 		return err
 	}
 
 	if read.ID == nil {
-		return fmt.Errorf("Cannot read App Service %s (resource group %s) ID", name, resourceGroup)
+		return fmt.Errorf("Cannot read App Service Slot %s (app service %s, resource group %s) ID", name, appServiceName, resourceGroup)
 	}
 
 	d.SetId(*read.ID)
 
-	return resourceArmAppServiceRead(d, meta)
+	return resourceArmAppServiceSlotRead(d, meta)
 }
 
-func resourceArmAppServiceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceArmAppServiceSlotRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).sitesClient
 
 	id, err := parseAzureResourceID(d.Id())
@@ -103,30 +102,32 @@ func resourceArmAppServiceRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 	resourceGroup := id.ResourceGroup
-	name := id.Path["sites"]
+	appServiceName := id.Path["sites"]
+	name := id.Path["slots"]
 
-	resp, err := client.GetSite(resourceGroup, name, "")
+	resp, err := client.GetSiteSlot(resourceGroup, appServiceName, name, "")
 	if err != nil {
 		if resp.StatusCode == http.StatusNotFound {
 			d.SetId("")
 			return nil
 		}
 
-		return fmt.Errorf("Error making Read request on App Service Plan %s: %s", name, err)
+		return fmt.Errorf("Error making Read request on App Service Slot %s: %s", name, err)
 	}
 
 	d.Set("name", resp.Name)
-	d.Set("location", azureRMNormalizeLocation(*resp.Location))
-	d.Set("resource_group_name", resp.ResourceGroup)
 	d.Set("kind", resp.Kind)
-	d.Set("server_farm_id", resp.ServerFarmID)
+	d.Set("location", azureRMNormalizeLocation(*resp.Location))
+	d.Set("app_service_name", appServiceName)
+	d.Set("resource_group_name", resp.ResourceGroup)
 
+	flattenAndSetAppServiceSiteConfig(d, resp.SiteProperties)
 	flattenAndSetTags(d, resp.Tags)
 
 	return nil
 }
 
-func resourceArmAppServiceDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceArmAppServiceSlotDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).sitesClient
 
 	id, err := parseAzureResourceID(d.Id())
@@ -134,11 +135,12 @@ func resourceArmAppServiceDelete(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 	resourceGroup := id.ResourceGroup
-	name := id.Path["sites"]
+	appServiceName := id.Path["sites"]
+	name := id.Path["slots"]
 
-	resp, err := client.DeleteSite(resourceGroup, name, "", "", "", "")
+	resp, err := client.DeleteSiteSlot(resourceGroup, appServiceName, name, "", "", "", "")
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Error issuing Azure ARM delete request of App Service Plan '%s': %s", name, err)
+		return fmt.Errorf("Error issuing Azure ARM delete request of App Service Slot '%s': %s", name, err)
 	}
 
 	return nil
