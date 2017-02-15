@@ -121,6 +121,7 @@ func resourceArmAppServiceRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("kind", resp.Kind)
 	d.Set("server_farm_id", resp.ServerFarmID)
 
+	flattenAndSetAppServiceSiteConfig(d, resp.SiteProperties)
 	flattenAndSetTags(d, resp.Tags)
 
 	return nil
