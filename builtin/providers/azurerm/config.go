@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/servicebus"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
 	"github.com/Azure/azure-sdk-for-go/arm/trafficmanager"
+	"github.com/Azure/azure-sdk-for-go/arm/web"
 	mainStorage "github.com/Azure/azure-sdk-for-go/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -94,6 +95,9 @@ type ArmClient struct {
 	serviceBusNamespacesClient    servicebus.NamespacesClient
 	serviceBusTopicsClient        servicebus.TopicsClient
 	serviceBusSubscriptionsClient servicebus.SubscriptionsClient
+
+	sitesClient       web.SitesClient
+	serverFarmsClient web.ServerFarmsClient
 
 	keyVaultClient keyvault.VaultsClient
 }
@@ -442,6 +446,18 @@ func (c *Config) getArmClient() (*ArmClient, error) {
 	sbsc.Authorizer = spt
 	sbsc.Sender = autorest.CreateSender(withRequestLogging())
 	client.serviceBusSubscriptionsClient = sbsc
+
+	sc := web.NewSitesClientWithBaseURI(endpoint, c.SubscriptionID)
+	setUserAgent(&sc.Client)
+	sc.Authorizer = spt
+	sc.Sender = autorest.CreateSender(withRequestLogging())
+	client.sitesClient = sc
+
+	sfc := web.NewServerFarmsClientWithBaseURI(endpoint, c.SubscriptionID)
+	setUserAgent(&sfc.Client)
+	sfc.Authorizer = spt
+	sfc.Sender = autorest.CreateSender(withRequestLogging())
+	client.serverFarmsClient = sfc
 
 	kvc := keyvault.NewVaultsClientWithBaseURI(endpoint, c.SubscriptionID)
 	setUserAgent(&kvc.Client)
