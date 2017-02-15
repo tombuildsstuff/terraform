@@ -130,6 +130,14 @@
 			"versionExact": "v8.1.0-beta"
 		},
 		{
+			"checksumSHA1": "fpZJG6cpx+6HAx/vHBZL/nTubBI=",
+			"path": "github.com/Azure/azure-sdk-for-go/arm/web",
+			"revision": "0984e0641ae43b89283223034574d6465be93bf4",
+			"revisionTime": "2016-11-30T22:29:01Z",
+			"version": "v7.0.1-beta",
+			"versionExact": "v7.0.1-beta"
+		},
+		{
 			"checksumSHA1": "JUEQrLvmfuxKwX/s89mFnzg7jc0=",
 			"comment": "v2.1.1-beta-8-gca4d906",
 			"path": "github.com/Azure/azure-sdk-for-go/management",
@@ -2827,7 +2835,7 @@
 			"revisionTime": "2016-09-27T10:08:44Z"
 		},
 		{
-			"checksumSHA1": "6NyHxCamdKavA6RYSRuCEG3MtKA=",
+			"checksumSHA1": "/hY/JUzzV5+IMAGkfTGI3VA4k9Y=",
 			"path": "github.com/scaleway/scaleway-cli/pkg/api",
 			"revision": "2938313569b7f6cee34fdaae2a23c0daa7de5f3c",
 			"revisionTime": "2017-02-07T21:56:28Z"
