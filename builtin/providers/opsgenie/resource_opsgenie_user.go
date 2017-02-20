@@ -45,6 +45,10 @@ func resourceOpsGenieUser() *schema.Resource {
 				Optional: true,
 				Default:  "America/New_York",
 			},
+			"skype_username": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -57,13 +61,15 @@ func resourceOpsGenieUserCreate(d *schema.ResourceData, meta interface{}) error 
 	role := d.Get("role").(string)
 	locale := d.Get("locale").(string)
 	timeZone := d.Get("timezone").(string)
+	skypeUsername := d.Get("skype_username").(string)
 
 	createRequest := user.CreateUserRequest{
-		Username: username,
-		Fullname: fullName,
-		Role:     role,
-		Locale:   locale,
-		Timezone: timeZone,
+		Username:      username,
+		Fullname:      fullName,
+		Role:          role,
+		Locale:        locale,
+		Timezone:      timeZone,
+		SkypeUsername: skypeUsername,
 	}
 
 	log.Printf("[INFO] Creating OpsGenie user '%s'", username)
@@ -128,6 +134,7 @@ func resourceOpsGenieUserRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("role", getResponse.Role)
 	d.Set("locale", getResponse.Locale)
 	d.Set("timezone", getResponse.Timezone)
+	d.Set("skype_username", getResponse.SkypeUsername)
 
 	return nil
 }

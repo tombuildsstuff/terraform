@@ -197,10 +197,11 @@ resource "opsgenie_user" "test" {
 
 var testAccOpsGenieUser_complete = `
 resource "opsgenie_user" "test" {
-  username  = "acctest-%d@example.tld"
-  full_name = "Acceptance Test User"
-  role      = "User"
-  locale    = "en_GB"
-  timezone  = "Etc/GMT"
+  username       = "acctest-%d@example.tld"
+  full_name      = "Acceptance Test User"
+  role           = "User"
+  locale         = "en_GB"
+  timezone  		 = "Etc/GMT"
+	skype_username = "acceptance_testing_2861user"
 }
 `
