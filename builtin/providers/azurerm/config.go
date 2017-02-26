@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/eventhub"
 	"github.com/Azure/azure-sdk-for-go/arm/keyvault"
 	"github.com/Azure/azure-sdk-for-go/arm/network"
+	"github.com/Azure/azure-sdk-for-go/arm/powerbiembedded"
 	"github.com/Azure/azure-sdk-for-go/arm/redis"
 	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 	"github.com/Azure/azure-sdk-for-go/arm/scheduler"
@@ -62,6 +63,9 @@ type ArmClient struct {
 	vnetPeeringsClient           network.VirtualNetworkPeeringsClient
 	routeTablesClient            network.RouteTablesClient
 	routesClient                 network.RoutesClient
+
+	workspaceCollectionsClient powerbiembedded.WorkspaceCollectionsClient
+	workspacesClient           powerbiembedded.WorkspacesClient
 
 	cdnProfilesClient  cdn.ProfilesClient
 	cdnEndpointsClient cdn.EndpointsClient
@@ -340,6 +344,18 @@ func (c *Config) getArmClient() (*ArmClient, error) {
 	rc.Authorizer = spt
 	rc.Sender = autorest.CreateSender(withRequestLogging())
 	client.routesClient = rc
+
+	wcc := powerbiembedded.NewWorkspaceCollectionsClientWithBaseURI(endpoint, c.SubscriptionID)
+	setUserAgent(&wcc.Client)
+	wcc.Authorizer = spt
+	wcc.Sender = autorest.CreateSender(withRequestLogging())
+	client.workspaceCollectionsClient = wcc
+
+	wc := powerbiembedded.NewWorkspacesClientWithBaseURI(endpoint, c.SubscriptionID)
+	setUserAgent(&wc.Client)
+	wc.Authorizer = spt
+	wc.Sender = autorest.CreateSender(withRequestLogging())
+	client.workspacesClient = wc
 
 	rgc := resources.NewGroupsClientWithBaseURI(endpoint, c.SubscriptionID)
 	setUserAgent(&rgc.Client)
