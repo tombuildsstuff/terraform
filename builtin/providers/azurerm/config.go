@@ -65,7 +65,6 @@ type ArmClient struct {
 	routesClient                 network.RoutesClient
 
 	workspaceCollectionsClient powerbiembedded.WorkspaceCollectionsClient
-	workspacesClient           powerbiembedded.WorkspacesClient
 
 	cdnProfilesClient  cdn.ProfilesClient
 	cdnEndpointsClient cdn.EndpointsClient
@@ -350,12 +349,6 @@ func (c *Config) getArmClient() (*ArmClient, error) {
 	wcc.Authorizer = spt
 	wcc.Sender = autorest.CreateSender(withRequestLogging())
 	client.workspaceCollectionsClient = wcc
-
-	wc := powerbiembedded.NewWorkspacesClientWithBaseURI(endpoint, c.SubscriptionID)
-	setUserAgent(&wc.Client)
-	wc.Authorizer = spt
-	wc.Sender = autorest.CreateSender(withRequestLogging())
-	client.workspacesClient = wc
 
 	rgc := resources.NewGroupsClientWithBaseURI(endpoint, c.SubscriptionID)
 	setUserAgent(&rgc.Client)
