@@ -10,64 +10,64 @@ import (
 	"github.com/hashicorp/terraform/terraform"
 )
 
-func TestAccAzureRMPowerBIWorkspaceCollection_basic(t *testing.T) {
+func TestAccAzureRMPowerBIEmbeddedWorkspaceCollection_basic(t *testing.T) {
 	rInt := acctest.RandInt()
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testCheckAzureRMPowerBIWorkspaceCollectionDestroy,
+		CheckDestroy: testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basic(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basic(rInt),
 				Check: resource.ComposeTestCheckFunc(
-					testCheckAzureRMPowerBIWorkspaceCollectionExists("azurerm_powerbi_workspace_collection.test"),
+					testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionExists("azurerm_powerbi_embedded_workspace_collection.test"),
 				),
 			},
 		},
 	})
 }
 
-func TestAccAzureRMPowerBIWorkspaceCollection_basicWithTags(t *testing.T) {
+func TestAccAzureRMPowerBIEmbeddedWorkspaceCollection_basicWithTags(t *testing.T) {
 	rInt := acctest.RandInt()
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testCheckAzureRMPowerBIWorkspaceCollectionDestroy,
+		CheckDestroy: testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basicWithTags(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basicWithTags(rInt),
 				Check: resource.ComposeTestCheckFunc(
-					testCheckAzureRMPowerBIWorkspaceCollectionExists("azurerm_powerbi_workspace_collection.test"),
+					testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionExists("azurerm_powerbi_embedded_workspace_collection.test"),
 				),
 			},
 		},
 	})
 }
 
-func TestAccAzureRMPowerBIWorkspaceCollection_update(t *testing.T) {
+func TestAccAzureRMPowerBIEmbeddedWorkspaceCollection_update(t *testing.T) {
 	rInt := acctest.RandInt()
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testCheckAzureRMPowerBIWorkspaceCollectionDestroy,
+		CheckDestroy: testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basic(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basic(rInt),
 				Check: resource.ComposeTestCheckFunc(
-					testCheckAzureRMPowerBIWorkspaceCollectionExists("azurerm_powerbi_workspace_collection.test"),
+					testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionExists("azurerm_powerbi_embedded_workspace_collection.test"),
 				),
 			},
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basicWithTags(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basicWithTags(rInt),
 				Check: resource.ComposeTestCheckFunc(
-					testCheckAzureRMPowerBIWorkspaceCollectionExists("azurerm_powerbi_workspace_collection.test"),
+					testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionExists("azurerm_powerbi_embedded_workspace_collection.test"),
 				),
 			},
 		},
 	})
 }
 
-func testCheckAzureRMPowerBIWorkspaceCollectionExists(name string) resource.TestCheckFunc {
+func testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionExists(name string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[name]
 		if !ok {
@@ -95,12 +95,12 @@ func testCheckAzureRMPowerBIWorkspaceCollectionExists(name string) resource.Test
 	}
 }
 
-func testCheckAzureRMPowerBIWorkspaceCollectionDestroy(s *terraform.State) error {
+func testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy(s *terraform.State) error {
 	conn := testAccProvider.Meta().(*ArmClient).workspaceCollectionsClient
 
 	for _, rs := range s.RootModule().Resources {
 
-		if rs.Type != "azurerm_powerbi_workspace_collection" {
+		if rs.Type != "azurerm_powerbi_embedded_workspace_collection" {
 			continue
 		}
 
@@ -114,21 +114,21 @@ func testCheckAzureRMPowerBIWorkspaceCollectionDestroy(s *terraform.State) error
 		}
 
 		if resp.StatusCode != http.StatusNotFound {
-			return fmt.Errorf("PowerBI Workspace Collection still exists:\n%#v", resp)
+			return fmt.Errorf("PowerBI Embedded Workspace Collection still exists:\n%#v", resp)
 		}
 	}
 
 	return nil
 }
 
-func testAccAzureRMPowerBIWorkspaceCollection_basic(rInt int) string {
+func testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basic(rInt int) string {
 	return fmt.Sprintf(`
 resource "azurerm_resource_group" "test" {
     name = "acctestRG-%d"
     location = "West US"
 }
 
-resource "azurerm_powerbi_workspace_collection" "test" {
+resource "azurerm_powerbi_embedded_workspace_collection" "test" {
     name                = "accTestPowerBIWorkspaceCollection-%d"
     location            = "${azurerm_resource_group.test.location}"
     resource_group_name = "${azurerm_resource_group.test.name}"
@@ -139,14 +139,14 @@ resource "azurerm_powerbi_workspace_collection" "test" {
     }
 }`, rInt, rInt)
 }
-func testAccAzureRMPowerBIWorkspaceCollection_basicWithTags(rInt int) string {
+func testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basicWithTags(rInt int) string {
 	return fmt.Sprintf(`
 resource "azurerm_resource_group" "test" {
     name = "acctestRG-%d"
     location = "West US"
 }
 
-resource "azurerm_powerbi_workspace_collection" "test" {
+resource "azurerm_powerbi_embedded_workspace_collection" "test" {
     name                = "accTestPowerBIWorkspaceCollection-%d"
     location            = "${azurerm_resource_group.test.location}"
     resource_group_name = "${azurerm_resource_group.test.name}"

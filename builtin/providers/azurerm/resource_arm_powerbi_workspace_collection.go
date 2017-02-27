@@ -11,12 +11,12 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func resourceArmPowerBIWorkspaceCollection() *schema.Resource {
+func resourceArmPowerBIEmbeddedWorkspaceCollection() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceArmPowerBIWorkspaceCollectionCreate,
-		Read:   resourceArmPowerBIWorkspaceCollectionRead,
-		Update: resourceArmPowerBIWorkspaceCollectionUpdate,
-		Delete: resourceArmPowerBIWorkspaceCollectionDelete,
+		Create: resourceArmPowerBIEmbeddedWorkspaceCollectionCreate,
+		Read:   resourceArmPowerBIEmbeddedWorkspaceCollectionRead,
+		Update: resourceArmPowerBIEmbeddedWorkspaceCollectionUpdate,
+		Delete: resourceArmPowerBIEmbeddedWorkspaceCollectionDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -53,7 +53,7 @@ func resourceArmPowerBIWorkspaceCollection() *schema.Resource {
 						},
 					},
 				},
-				Set: resourceAzureRMPowerBIWorkspaceCollectionSkuHash,
+				Set: resourceAzureRMPowerBIEmbeddedWorkspaceCollectionSkuHash,
 			},
 
 			"tags": tagsSchema(),
@@ -63,7 +63,7 @@ func resourceArmPowerBIWorkspaceCollection() *schema.Resource {
 	}
 }
 
-func resourceArmPowerBIWorkspaceCollectionCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceArmPowerBIEmbeddedWorkspaceCollectionCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).workspaceCollectionsClient
 
 	log.Printf("[INFO] preparing arguments for AzureRM PowerBI Embedded Workspace Collection Creation.")
@@ -71,7 +71,7 @@ func resourceArmPowerBIWorkspaceCollectionCreate(d *schema.ResourceData, meta in
 	name := d.Get("name").(string)
 	location := d.Get("location").(string)
 	resourceGroup := d.Get("resource_group_name").(string)
-	skuName, skuTier := expandAzureRmPowerBIWorkspaceCollectionSku(d)
+	skuName, skuTier := expandAzureRmPowerBIEmbeddedWorkspaceCollectionSku(d)
 	tags := d.Get("tags").(map[string]interface{})
 
 	properties := powerbiembedded.CreateWorkspaceCollectionRequest{
@@ -98,10 +98,10 @@ func resourceArmPowerBIWorkspaceCollectionCreate(d *schema.ResourceData, meta in
 
 	d.SetId(*read.ID)
 
-	return resourceArmPowerBIWorkspaceCollectionRead(d, meta)
+	return resourceArmPowerBIEmbeddedWorkspaceCollectionRead(d, meta)
 }
 
-func resourceArmPowerBIWorkspaceCollectionUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceArmPowerBIEmbeddedWorkspaceCollectionUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).workspaceCollectionsClient
 
 	id, err := parseAzureResourceID(d.Id())
@@ -112,7 +112,7 @@ func resourceArmPowerBIWorkspaceCollectionUpdate(d *schema.ResourceData, meta in
 	resourceGroup := id.ResourceGroup
 	name := id.Path["workspaceCollections"]
 
-	skuName, skuTier := expandAzureRmPowerBIWorkspaceCollectionSku(d)
+	skuName, skuTier := expandAzureRmPowerBIEmbeddedWorkspaceCollectionSku(d)
 	tags := d.Get("tags").(map[string]interface{})
 
 	updateProperties := powerbiembedded.UpdateWorkspaceCollectionRequest{
@@ -128,10 +128,10 @@ func resourceArmPowerBIWorkspaceCollectionUpdate(d *schema.ResourceData, meta in
 		return err
 	}
 
-	return resourceArmPowerBIWorkspaceCollectionRead(d, meta)
+	return resourceArmPowerBIEmbeddedWorkspaceCollectionRead(d, meta)
 }
 
-func resourceArmPowerBIWorkspaceCollectionRead(d *schema.ResourceData, meta interface{}) error {
+func resourceArmPowerBIEmbeddedWorkspaceCollectionRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).workspaceCollectionsClient
 
 	id, err := parseAzureResourceID(d.Id())
@@ -161,7 +161,7 @@ func resourceArmPowerBIWorkspaceCollectionRead(d *schema.ResourceData, meta inte
 	return nil
 }
 
-func resourceArmPowerBIWorkspaceCollectionDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceArmPowerBIEmbeddedWorkspaceCollectionDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*ArmClient).workspaceCollectionsClient
 
 	id, err := parseAzureResourceID(d.Id())
@@ -175,7 +175,7 @@ func resourceArmPowerBIWorkspaceCollectionDelete(d *schema.ResourceData, meta in
 	return err
 }
 
-func expandAzureRmPowerBIWorkspaceCollectionSku(d *schema.ResourceData) (string, string) {
+func expandAzureRmPowerBIEmbeddedWorkspaceCollectionSku(d *schema.ResourceData) (string, string) {
 	skus := d.Get("sku").(*schema.Set).List()
 	sku := skus[0].(map[string]interface{})
 
@@ -187,7 +187,7 @@ func expandAzureRmPowerBIWorkspaceCollectionSku(d *schema.ResourceData) (string,
 
 func flattenAndSetSku(d *schema.ResourceData, sku *powerbiembedded.AzureSku) {
 	skuConfigs := &schema.Set{
-		F: resourceAzureRMPowerBIWorkspaceCollectionSkuHash,
+		F: resourceAzureRMPowerBIEmbeddedWorkspaceCollectionSkuHash,
 	}
 
 	skuConfig := make(map[string]interface{}, 2)
@@ -200,7 +200,7 @@ func flattenAndSetSku(d *schema.ResourceData, sku *powerbiembedded.AzureSku) {
 	d.Set("sku", skuConfigs)
 }
 
-func resourceAzureRMPowerBIWorkspaceCollectionSkuHash(v interface{}) int {
+func resourceAzureRMPowerBIEmbeddedWorkspaceCollectionSkuHash(v interface{}) int {
 	var buf bytes.Buffer
 	m := v.(map[string]interface{})
 

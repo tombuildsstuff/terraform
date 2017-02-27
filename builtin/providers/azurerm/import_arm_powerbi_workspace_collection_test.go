@@ -7,17 +7,17 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 )
 
-func TestAccAzureRMPowerBIWorkspaceCollection_importBasic(t *testing.T) {
+func TestAccAzureRMPowerBIEmbeddedWorkspaceCollection_importBasic(t *testing.T) {
 	rInt := acctest.RandInt()
-	resourceName := "azurerm_powerbi_workspace_collection.test"
+	resourceName := "azurerm_powerbi_embedded_workspace_collection.test"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testCheckAzureRMPowerBIWorkspaceCollectionDestroy,
+		CheckDestroy: testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basic(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basic(rInt),
 			},
 
 			{
@@ -29,17 +29,17 @@ func TestAccAzureRMPowerBIWorkspaceCollection_importBasic(t *testing.T) {
 	})
 }
 
-func TestAccAzureRMPowerBIWorkspaceCollection_importBasicWithTags(t *testing.T) {
+func TestAccAzureRMPowerBIEmbeddedWorkspaceCollection_importBasicWithTags(t *testing.T) {
 	rInt := acctest.RandInt()
-	resourceName := "azurerm_powerbi_workspace_collection.test"
+	resourceName := "azurerm_powerbi_embedded_workspace_collection.test"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testCheckAzureRMPowerBIWorkspaceCollectionDestroy,
+		CheckDestroy: testCheckAzureRMPowerBIEmbeddedWorkspaceCollectionDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAzureRMPowerBIWorkspaceCollection_basicWithTags(rInt),
+				Config: testAccAzureRMPowerBIEmbeddedWorkspaceCollection_basicWithTags(rInt),
 			},
 
 			{

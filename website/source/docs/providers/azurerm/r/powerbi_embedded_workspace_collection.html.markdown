@@ -1,14 +1,14 @@
 ---
 layout: "azurerm"
-page_title: "Azure Resource Manager: azurerm_powerbi_workspace_collection"
-sidebar_current: "docs-azurerm-resource-powerbi-workspace-collection"
+page_title: "Azure Resource Manager: azurerm_powerbi_embedded_workspace_collection"
+sidebar_current: "docs-azurerm-resource-powerbi-embedded-workspace-collection"
 description: |-
-  Creates a PowerBI Workspace Collection
+  Creates a PowerBI Embedded Workspace Collection
 ---
 
-# azurerm\_powerbi\_workspace\_collection
+# azurerm\_powerbi\_embedded\_workspace\_collection
 
-Creates a PowerBI Workspace Collection
+Creates a PowerBI Embedded Workspace Collection
 
 ## Example Usage
 
@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "test" {
     location = "West US"
 }
 
-resource "azurerm_powerbi_workspace_collection" "test" {
+resource "azurerm_powerbi_embedded_workspace_collection" "test" {
     name                = "example-workspace-collection"
     location            = "${azurerm_resource_group.test.location}"
     resource_group_name = "${azurerm_resource_group.test.name}"
@@ -61,13 +61,13 @@ The `sku` block supports:
 
 The following attributes are exported:
 
-* `id` - The PowerBI Workspace Collection ID.
+* `id` - The PowerBI Embedded Workspace Collection ID.
 
 ## Import
 
-PowerBI Workspace Collections can be imported using the `resource id`, e.g.
+PowerBI Embedded Workspace Collections can be imported using the `resource id`, e.g.
 
 ```
-terraform import azurerm_powerbi_workspace_collection.myworkspace 
+terraform import azurerm_powerbi_embedded_workspace_collection.myworkspace
 /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.PowerBI/workspaceCollections/myworkspace
 ```
