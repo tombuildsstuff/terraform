@@ -171,15 +171,7 @@ func resourceArmPowerBIWorkspaceCollectionDelete(d *schema.ResourceData, meta in
 	resourceGroup := id.ResourceGroup
 	name := id.Path["workspaceCollections"]
 
-	resp, err := client.Delete(resourceGroup, name, make(chan struct{}))
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Error issuing AzureRM delete request of PowerBI Workspace Collection '%s': %s", name, err)
-	}
-
+	_, err = client.Delete(resourceGroup, name)
 	return err
 }
 
