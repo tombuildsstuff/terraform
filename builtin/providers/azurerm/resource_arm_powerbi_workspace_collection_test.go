@@ -137,7 +137,7 @@ resource "azurerm_powerbi_workspace_collection" "test" {
     	name = "S1"
     	tier = "Standard"
     }
-}`, rInt)
+}`, rInt, rInt)
 }
 func testAccAzureRMPowerBIWorkspaceCollection_basicWithTags(rInt int) string {
 	return fmt.Sprintf(`
@@ -159,5 +159,5 @@ resource "azurerm_powerbi_workspace_collection" "test" {
     tags {
     	hello = "world"
     }
-}`, rInt)
+}`, rInt, rInt)
 }

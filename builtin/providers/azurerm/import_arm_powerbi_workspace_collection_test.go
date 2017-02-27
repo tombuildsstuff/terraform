@@ -21,9 +21,9 @@ func TestAccAzureRMPowerBIWorkspaceCollection_importBasic(t *testing.T) {
 			},
 
 			{
-				ResourceName:            resourceName,
-				ImportState:             true,
-				ImportStateVerify:       true,
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -43,9 +43,9 @@ func TestAccAzureRMPowerBIWorkspaceCollection_importBasicWithTags(t *testing.T) 
 			},
 
 			{
-				ResourceName:            resourceName,
-				ImportState:             true,
-				ImportStateVerify:       true,
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})

@@ -57,6 +57,8 @@ func resourceArmPowerBIWorkspaceCollection() *schema.Resource {
 			},
 
 			"tags": tagsSchema(),
+
+			// TODO: Primary/Secondary access keys as Computed fields
 		},
 	}
 }
@@ -69,7 +71,7 @@ func resourceArmPowerBIWorkspaceCollectionCreate(d *schema.ResourceData, meta in
 	name := d.Get("name").(string)
 	location := d.Get("location").(string)
 	resourceGroup := d.Get("resource_group_name").(string)
-	skuName, skuTier := expandAzureRmPowerBIEmbeddedWorkspaceCollectionTier(d)
+	skuName, skuTier := expandAzureRmPowerBIWorkspaceCollectionSku(d)
 	tags := d.Get("tags").(map[string]interface{})
 
 	properties := powerbiembedded.CreateWorkspaceCollectionRequest{
@@ -110,7 +112,7 @@ func resourceArmPowerBIWorkspaceCollectionUpdate(d *schema.ResourceData, meta in
 	resourceGroup := id.ResourceGroup
 	name := id.Path["workspaceCollections"]
 
-	skuName, skuTier := expandAzureRmPowerBIEmbeddedWorkspaceCollectionTier(d)
+	skuName, skuTier := expandAzureRmPowerBIWorkspaceCollectionSku(d)
 	tags := d.Get("tags").(map[string]interface{})
 
 	updateProperties := powerbiembedded.UpdateWorkspaceCollectionRequest{
@@ -169,12 +171,19 @@ func resourceArmPowerBIWorkspaceCollectionDelete(d *schema.ResourceData, meta in
 	resourceGroup := id.ResourceGroup
 	name := id.Path["workspaceCollections"]
 
-	_, err = client.Delete(resourceGroup, name, make(chan struct{}))
+	resp, err := client.Delete(resourceGroup, name, make(chan struct{}))
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("Error issuing AzureRM delete request of PowerBI Workspace Collection '%s': %s", name, err)
+	}
 
 	return err
 }
 
-func expandAzureRmPowerBIEmbeddedWorkspaceCollectionTier(d *schema.ResourceData) (string, string) {
+func expandAzureRmPowerBIWorkspaceCollectionSku(d *schema.ResourceData) (string, string) {
 	skus := d.Get("sku").(*schema.Set).List()
 	sku := skus[0].(map[string]interface{})
 
