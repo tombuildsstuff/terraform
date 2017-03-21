@@ -37,8 +37,8 @@ func resourceOpsGenieContact() *schema.Resource {
 			},
 			"enabled": {
 				Type:     schema.TypeBool,
-				Optional: true,
-				Computed: true,
+				Required: true,
+				Default:  true,
 			},
 		},
 	}

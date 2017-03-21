@@ -60,11 +60,11 @@ The following arguments are supported:
 
 The following attributes are exported:
 
-* `id` - The ID of the OpsGenie User.
+* `id` - The ID of the OpsGenie Team.
 
 ## Import
 
-Users can be imported using the `id`, e.g.
+Teams can be imported using the `id`, e.g.
 
 ```
 $ terraform import opsgenie_team.team1 812be1a1-32c8-4666-a7fb-03ecc385106c
