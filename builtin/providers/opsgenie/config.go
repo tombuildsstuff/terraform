@@ -13,8 +13,9 @@ type OpsGenieClient struct {
 
 	StopContext context.Context
 
-	teams client.OpsGenieTeamClient
-	users client.OpsGenieUserClient
+	contacts client.OpsGenieContactClient
+	teams    client.OpsGenieTeamClient
+	users    client.OpsGenieUserClient
 }
 
 // Config defines the configuration options for the OpsGenie client
