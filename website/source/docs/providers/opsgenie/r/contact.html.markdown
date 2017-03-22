@@ -32,7 +32,7 @@ The following arguments are supported:
 
 * `username` - (Required) The Username of the User to associate this Contact with.
 
-* `method` - (Required) The Method to Contact this user by - accepted values are `email`, `sms` or `voice`.
+* `method` - (Required) The Method to Contact this user by - accepted values are `email`, `sms` or `voice`. Changing this forces a new resource to be created.
 
 * `to` - (Required) - Address of the contact. Should be a valid email address for email contacts and a valid phone number for sms and voice contacts.
 

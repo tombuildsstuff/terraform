@@ -25,6 +25,7 @@ func resourceOpsGenieContact() *schema.Resource {
 			"method": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					"email",
 					"sms",
@@ -85,7 +86,6 @@ func resourceOpsGenieContactUpdate(d *schema.ResourceData, meta interface{}) err
 	updateRequest := contact.UpdateContactRequest{
 		Id:       d.Id(),
 		Username: username,
-		Method:   method,
 		To:       to,
 	}
 
