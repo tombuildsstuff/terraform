@@ -150,6 +150,20 @@ func (cli *OpsGenieClient) Alert() (*OpsGenieAlertClient, error) {
 	return alertClient, nil
 }
 
+// Alert instantiates a new OpsGenieContactClient.
+func (cli *OpsGenieClient) Contact() (*OpsGenieContactClient, error) {
+	cli.makeHTTPTransportSettings()
+
+	contactClient := new(OpsGenieContactClient)
+	contactClient.SetOpsGenieClient(*cli)
+
+	if cli.opsGenieAPIURL == "" {
+		contactClient.SetOpsGenieAPIUrl(endpointURL)
+	}
+
+	return contactClient, nil
+}
+
 // Heartbeat instantiates a new OpsGenieHeartbeatClient.
 func (cli *OpsGenieClient) Heartbeat() (*OpsGenieHeartbeatClient, error) {
 	cli.makeHTTPTransportSettings()
@@ -234,6 +248,20 @@ func (cli *OpsGenieClient) Schedule() (*OpsGenieScheduleClient, error) {
 	return scheduleClient, nil
 }
 
+// ScheduleOverride instantiates a new OpsGenieScheduleOverrideClient.
+func (cli *OpsGenieClient) ScheduleOverride() (*OpsGenieScheduleOverrideClient, error) {
+	cli.makeHTTPTransportSettings()
+
+	scheduleOverrideClient := new(OpsGenieScheduleOverrideClient)
+	scheduleOverrideClient.SetOpsGenieClient(*cli)
+
+	if cli.opsGenieAPIURL == "" {
+		scheduleOverrideClient.SetOpsGenieAPIUrl(endpointURL)
+	}
+
+	return scheduleOverrideClient, nil
+}
+
 // User instantiates a new OpsGenieUserClient.
 func (cli *OpsGenieClient) User() (*OpsGenieUserClient, error) {
 	cli.makeHTTPTransportSettings()
@@ -275,9 +303,9 @@ func (cli *OpsGenieClient) buildGetRequest(uri string, request interface{}) gore
 		v, _ := goquery.Values(request)
 		req.Uri = uri + "?" + v.Encode()
 	} else {
-		req.Uri = uri 
+		req.Uri = uri
 	}
-	logging.Logger().Info("Executing OpsGenie request to ["+uri+"] with parameters: ")
+	logging.Logger().Info("Executing OpsGenie request to [" + uri + "] with parameters: ")
 	return req
 }
 

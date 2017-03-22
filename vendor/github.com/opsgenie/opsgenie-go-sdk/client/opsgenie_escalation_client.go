@@ -2,12 +2,13 @@ package client
 
 import (
 	"errors"
+
 	"github.com/opsgenie/opsgenie-go-sdk/escalation"
 	"github.com/opsgenie/opsgenie-go-sdk/logging"
 )
 
 const (
-	escalationURL          = "/v1/json/escalation"
+	escalationURL = "/v1/json/escalation"
 )
 
 // OpsGenieEscalationClient is the data type to make Escalation API requests.
