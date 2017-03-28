@@ -21,7 +21,7 @@ func resourceArmVirtualMachineExtensions() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -31,23 +31,23 @@ func resourceArmVirtualMachineExtensions() *schema.Resource {
 
 			"resource_group_name": resourceGroupNameSchema(),
 
-			"virtual_machine_name": &schema.Schema{
+			"virtual_machine_name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 
-			"publisher": &schema.Schema{
+			"publisher": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"type": &schema.Schema{
+			"type": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"type_handler_version": &schema.Schema{
+			"type_handler_version": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -57,7 +57,7 @@ func resourceArmVirtualMachineExtensions() *schema.Resource {
 				Optional: true,
 			},
 
-			"settings": &schema.Schema{
+			"settings": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				ValidateFunc:     validateJsonString,
@@ -65,7 +65,7 @@ func resourceArmVirtualMachineExtensions() *schema.Resource {
 			},
 
 			// due to the sensitive nature, these are not returned by the API
-			"protected_settings": &schema.Schema{
+			"protected_settings": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				Sensitive:        true,

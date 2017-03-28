@@ -20,7 +20,7 @@ func resourceArmSqlServer() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -30,23 +30,23 @@ func resourceArmSqlServer() *schema.Resource {
 
 			"resource_group_name": resourceGroupNameSchema(),
 
-			"version": &schema.Schema{
+			"version": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"administrator_login": &schema.Schema{
+			"administrator_login": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"administrator_login_password": &schema.Schema{
+			"administrator_login_password": {
 				Type:      schema.TypeString,
 				Required:  true,
 				Sensitive: true,
 			},
 
-			"fully_qualified_domain_name": &schema.Schema{
+			"fully_qualified_domain_name": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},

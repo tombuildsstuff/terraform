@@ -19,7 +19,7 @@ func resourceArmDnsTxtRecord() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -27,17 +27,17 @@ func resourceArmDnsTxtRecord() *schema.Resource {
 
 			"resource_group_name": resourceGroupNameSchema(),
 
-			"zone_name": &schema.Schema{
+			"zone_name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"record": &schema.Schema{
+			"record": {
 				Type:     schema.TypeSet,
 				Required: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"value": &schema.Schema{
+						"value": {
 							Type:     schema.TypeString,
 							Required: true,
 						},
@@ -45,7 +45,7 @@ func resourceArmDnsTxtRecord() *schema.Resource {
 				},
 			},
 
-			"ttl": &schema.Schema{
+			"ttl": {
 				Type:     schema.TypeInt,
 				Required: true,
 			},

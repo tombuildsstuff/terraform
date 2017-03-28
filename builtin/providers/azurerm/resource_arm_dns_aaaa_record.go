@@ -19,7 +19,7 @@ func resourceArmDnsAAAARecord() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -27,19 +27,19 @@ func resourceArmDnsAAAARecord() *schema.Resource {
 
 			"resource_group_name": resourceGroupNameSchema(),
 
-			"zone_name": &schema.Schema{
+			"zone_name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"records": &schema.Schema{
+			"records": {
 				Type:     schema.TypeSet,
 				Required: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 			},
 
-			"ttl": &schema.Schema{
+			"ttl": {
 				Type:     schema.TypeInt,
 				Required: true,
 			},
