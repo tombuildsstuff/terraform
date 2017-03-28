@@ -23,7 +23,6 @@ func TestAccAzureRMEventHubConsumerGroup_importBasic(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
@@ -47,7 +46,6 @@ func TestAccAzureRMEventHubConsumerGroup_importComplete(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,

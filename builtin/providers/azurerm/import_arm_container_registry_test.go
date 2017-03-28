@@ -23,7 +23,6 @@ func TestAccAzureRMContainerRegistry_importBasic(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:            resourceName,
 				ImportState:             true,
@@ -49,7 +48,6 @@ func TestAccAzureRMContainerRegistry_importComplete(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:            resourceName,
 				ImportState:             true,

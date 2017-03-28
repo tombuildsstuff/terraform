@@ -23,7 +23,6 @@ func TestAccAzureRMEventHub_importBasic(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,

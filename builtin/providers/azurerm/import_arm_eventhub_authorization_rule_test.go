@@ -23,7 +23,6 @@ func TestAccAzureRMEventHubAuthorizationRule_importListen(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
@@ -47,7 +46,6 @@ func TestAccAzureRMEventHubAuthorizationRule_importSend(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
@@ -71,7 +69,6 @@ func TestAccAzureRMEventHubAuthorizationRule_importReadWrite(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
@@ -95,7 +92,6 @@ func TestAccAzureRMEventHubAuthorizationRule_importManage(t *testing.T) {
 			{
 				Config: config,
 			},
-
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
