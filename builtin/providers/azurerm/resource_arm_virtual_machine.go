@@ -33,11 +33,7 @@ func resourceArmVirtualMachine() *schema.Resource {
 
 			"location": locationSchema(),
 
-			"resource_group_name": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
+			"resource_group_name": resourceGroupNameSchema(),
 
 			"plan": {
 				Type:     schema.TypeSet,
@@ -446,6 +442,7 @@ func resourceArmVirtualMachine() *schema.Resource {
 
 func validateLicenseType(v interface{}, k string) (ws []string, errors []error) {
 	value := v.(string)
+	// NOTE: this can also be `Windows_Client`
 	if value != "" && value != "Windows_Server" {
 		errors = append(errors, fmt.Errorf(
 			"[ERROR] license_type must be 'Windows_Server' or empty"))

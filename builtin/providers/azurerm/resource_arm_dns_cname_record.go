@@ -25,11 +25,7 @@ func resourceArmDnsCNameRecord() *schema.Resource {
 				ForceNew: true,
 			},
 
-			"resource_group_name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
+			"resource_group_name": resourceGroupNameSchema(),
 
 			"zone_name": &schema.Schema{
 				Type:     schema.TypeString,

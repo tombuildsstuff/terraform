@@ -37,11 +37,7 @@ func resourceArmLoadBalancerBackendAddressPool() *schema.Resource {
 				Deprecated:       "location is no longer used",
 			},
 
-			"resource_group_name": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
+			"resource_group_name": resourceGroupNameSchema(),
 
 			"loadbalancer_id": {
 				Type:     schema.TypeString,

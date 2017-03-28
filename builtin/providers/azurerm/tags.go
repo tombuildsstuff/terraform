@@ -7,15 +7,6 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func tagsSchema() *schema.Schema {
-	return &schema.Schema{
-		Type:         schema.TypeMap,
-		Optional:     true,
-		Computed:     true,
-		ValidateFunc: validateAzureRMTags,
-	}
-}
-
 func tagValueToString(v interface{}) (string, error) {
 	switch value := v.(type) {
 	case string:

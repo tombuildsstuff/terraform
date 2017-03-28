@@ -22,12 +22,7 @@ func resourceArmResourceGroup() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validateArmResourceGroupName,
-			},
+			"name": resourceGroupNameSchema(),
 
 			"location": locationSchema(),
 

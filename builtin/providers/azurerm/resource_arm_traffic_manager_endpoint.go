@@ -32,7 +32,12 @@ func resourceArmTrafficManagerEndpoint() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringInSlice([]string{"azureEndpoints", "nestedEndpoints", "externalEndpoints"}, false),
+				ValidateFunc: validation.StringInSlice([]string{
+					// TODO: are there enum's we can use here?
+					"azureEndpoints",
+					"nestedEndpoints",
+					"externalEndpoints",
+				}, false),
 			},
 
 			"profile_name": {
@@ -86,12 +91,7 @@ func resourceArmTrafficManagerEndpoint() *schema.Resource {
 				Optional: true,
 			},
 
-			"resource_group_name": {
-				Type:             schema.TypeString,
-				Required:         true,
-				ForceNew:         true,
-				DiffSuppressFunc: resourceAzurermResourceGroupNameDiffSuppress,
-			},
+			"resource_group_name": resourceGroupNameSchema(),
 		},
 	}
 }

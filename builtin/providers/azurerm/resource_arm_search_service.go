@@ -26,27 +26,26 @@ func resourceArmSearchService() *schema.Resource {
 
 			"location": locationSchema(),
 
-			"resource_group_name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
+			"resource_group_name": resourceGroupNameSchema(),
 
 			"sku": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				// TODO: validation
 			},
 
 			"replica_count": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
+				// TODO: validation
 			},
 
 			"partition_count": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
+				// TODO: validation
 			},
 
 			"tags": tagsSchema(),
