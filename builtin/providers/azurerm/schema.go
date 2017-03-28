@@ -14,11 +14,11 @@ func locationSchema() *schema.Schema {
 
 func resourceGroupNameSchema() *schema.Schema {
 	return &schema.Schema{
-		Type:     schema.TypeString,
-		Required: true,
-		ForceNew: true,
+		Type:             schema.TypeString,
+		Required:         true,
+		ForceNew:         true,
 		DiffSuppressFunc: resourceAzurermResourceGroupNameDiffSuppress,
-		ValidateFunc: validateArmResourceGroupName,
+		ValidateFunc:     validateArmResourceGroupName,
 	}
 }
 

@@ -11,8 +11,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
 	"github.com/hashicorp/terraform/helper/hashcode"
 	"github.com/hashicorp/terraform/helper/schema"
-	riviera "github.com/jen20/riviera/azure"
 	"github.com/hashicorp/terraform/helper/validation"
+	riviera "github.com/jen20/riviera/azure"
 )
 
 func resourceArmVirtualMachine() *schema.Resource {
@@ -72,9 +72,9 @@ func resourceArmVirtualMachine() *schema.Resource {
 			},
 
 			"license_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					"Windows_Client",
 					"Windows_Server",

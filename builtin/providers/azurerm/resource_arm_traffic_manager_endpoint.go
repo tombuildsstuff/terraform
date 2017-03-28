@@ -29,9 +29,9 @@ func resourceArmTrafficManagerEndpoint() *schema.Resource {
 			},
 
 			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					// TODO: are there enum's we can use here?
 					"azureEndpoints",
