@@ -90,6 +90,7 @@ func Provider() terraform.ResourceProvider {
 			"azurerm_network_interface":         resourceArmNetworkInterface(),
 			"azurerm_network_security_group":    resourceArmNetworkSecurityGroup(),
 			"azurerm_network_security_rule":     resourceArmNetworkSecurityRule(),
+			"azurerm_network_watcher":           resourceArmNetworkWatcher(),
 			"azurerm_public_ip":                 resourceArmPublicIp(),
 			"azurerm_redis_cache":               resourceArmRedisCache(),
 			"azurerm_route":                     resourceArmRoute(),

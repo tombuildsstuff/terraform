@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/eventhub"
 	"github.com/Azure/azure-sdk-for-go/arm/keyvault"
 	"github.com/Azure/azure-sdk-for-go/arm/network"
+	"github.com/Azure/azure-sdk-for-go/arm/networkwatcher"
 	"github.com/Azure/azure-sdk-for-go/arm/redis"
 	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 	"github.com/Azure/azure-sdk-for-go/arm/scheduler"
@@ -62,6 +63,8 @@ type ArmClient struct {
 	vnetPeeringsClient           network.VirtualNetworkPeeringsClient
 	routeTablesClient            network.RouteTablesClient
 	routesClient                 network.RoutesClient
+
+	networkWatcherClient networkwatcher.NetworkWatchersClient
 
 	cdnProfilesClient  cdn.ProfilesClient
 	cdnEndpointsClient cdn.EndpointsClient
@@ -340,6 +343,12 @@ func (c *Config) getArmClient() (*ArmClient, error) {
 	rc.Authorizer = spt
 	rc.Sender = autorest.CreateSender(withRequestLogging())
 	client.routesClient = rc
+
+	nwc := networkwatcher.NewNetworkWatchersClientWithBaseURI(endpoint, c.SubscriptionID)
+	setUserAgent(&nwc.Client)
+	nwc.Authorizer = spt
+	nwc.Sender = autorest.CreateSender(withRequestLogging())
+	client.networkWatcherClient = nwc
 
 	rgc := resources.NewGroupsClientWithBaseURI(endpoint, c.SubscriptionID)
 	setUserAgent(&rgc.Client)
