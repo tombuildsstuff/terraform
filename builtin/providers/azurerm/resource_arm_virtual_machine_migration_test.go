@@ -13,7 +13,7 @@ func TestAzureRMVirtualMachineMigrateStateV0ToV1(t *testing.T) {
 		Expected     map[string]string
 		Meta         interface{}
 	}{
-		"v0_1_set_default": {
+		"v0_1_set_both_true": {
 			StateVersion: 0,
 			Attributes: map[string]string{
 				"os_profile_windows_config.#":                                       "1",
@@ -30,7 +30,7 @@ func TestAzureRMVirtualMachineMigrateStateV0ToV1(t *testing.T) {
 				"os_profile_windows_config.2256145325.winrm.#":                      "0",
 			},
 		},
-		"v0_1_set_other": {
+		"v0_1_set_both_false": {
 			StateVersion: 0,
 			Attributes: map[string]string{
 				"os_profile_windows_config.#":                                      "1",
@@ -38,6 +38,85 @@ func TestAzureRMVirtualMachineMigrateStateV0ToV1(t *testing.T) {
 				"os_profile_windows_config.429474957.enable_automatic_upgrades":    "false",
 				"os_profile_windows_config.429474957.provision_vm_agent":           "false",
 				"os_profile_windows_config.429474957.winrm.#":                      "0",
+			},
+			Expected: map[string]string{
+				"os_profile_windows_config.#":                                      "1",
+				"os_profile_windows_config.429474957.additional_unattend_config.#": "0",
+				"os_profile_windows_config.429474957.enable_automatic_upgrades":    "false",
+				"os_profile_windows_config.429474957.provision_vm_agent":           "false",
+				"os_profile_windows_config.429474957.winrm.#":                      "0",
+			},
+		},
+		"v0_1_set_auto_upgrades_false": {
+			StateVersion: 0,
+			Attributes: map[string]string{
+				"os_profile_windows_config.#":                                     "1",
+				"os_profile_windows_config.69840937.additional_unattend_config.#": "0",
+				"os_profile_windows_config.69840937.enable_automatic_upgrades":    "false",
+				"os_profile_windows_config.69840937.winrm.#":                      "0",
+			},
+			Expected: map[string]string{
+				"os_profile_windows_config.#":                                      "1",
+				"os_profile_windows_config.429474957.additional_unattend_config.#": "0",
+				"os_profile_windows_config.429474957.enable_automatic_upgrades":    "false",
+				"os_profile_windows_config.429474957.provision_vm_agent":           "false",
+				"os_profile_windows_config.429474957.winrm.#":                      "0",
+			},
+		},
+		"v0_1_set_auto_upgrades_true": {
+			StateVersion: 0,
+			Attributes: map[string]string{
+				"os_profile_windows_config.#":                                     "1",
+				"os_profile_windows_config.69840937.additional_unattend_config.#": "0",
+				"os_profile_windows_config.69840937.enable_automatic_upgrades":    "true",
+				"os_profile_windows_config.69840937.winrm.#":                      "0",
+			},
+			Expected: map[string]string{
+				"os_profile_windows_config.#":                                       "1",
+				"os_profile_windows_config.3590083716.additional_unattend_config.#": "0",
+				"os_profile_windows_config.3590083716.enable_automatic_upgrades":    "true",
+				"os_profile_windows_config.3590083716.provision_vm_agent":           "false",
+				"os_profile_windows_config.3590083716.winrm.#":                      "0",
+			},
+		},
+		"v0_1_set_vm_agent_false": {
+			StateVersion: 0,
+			Attributes: map[string]string{
+				"os_profile_windows_config.#":                                     "1",
+				"os_profile_windows_config.69840937.additional_unattend_config.#": "0",
+				"os_profile_windows_config.69840937.provision_vm_agent":           "false",
+				"os_profile_windows_config.69840937.winrm.#":                      "0",
+			},
+			Expected: map[string]string{
+				"os_profile_windows_config.#":                                      "1",
+				"os_profile_windows_config.429474957.additional_unattend_config.#": "0",
+				"os_profile_windows_config.429474957.enable_automatic_upgrades":    "false",
+				"os_profile_windows_config.429474957.provision_vm_agent":           "false",
+				"os_profile_windows_config.429474957.winrm.#":                      "0",
+			},
+		},
+		"v0_1_set_vm_agent_true": {
+			StateVersion: 0,
+			Attributes: map[string]string{
+				"os_profile_windows_config.#":                                     "1",
+				"os_profile_windows_config.69840937.additional_unattend_config.#": "0",
+				"os_profile_windows_config.69840937.provision_vm_agent":           "true",
+				"os_profile_windows_config.69840937.winrm.#":                      "0",
+			},
+			Expected: map[string]string{
+				"os_profile_windows_config.#":                                       "1",
+				"os_profile_windows_config.1534614206.additional_unattend_config.#": "0",
+				"os_profile_windows_config.1534614206.enable_automatic_upgrades":    "false",
+				"os_profile_windows_config.1534614206.provision_vm_agent":           "true",
+				"os_profile_windows_config.1534614206.winrm.#":                      "0",
+			},
+		},
+		"v0_1_unset": {
+			StateVersion: 0,
+			Attributes: map[string]string{
+				"os_profile_windows_config.#":                              "1",
+				"os_profile_windows_config.0.additional_unattend_config.#": "0",
+				"os_profile_windows_config.0.winrm.#":                      "0",
 			},
 			Expected: map[string]string{
 				"os_profile_windows_config.#":                                      "1",
